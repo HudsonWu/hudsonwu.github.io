@@ -8,8 +8,9 @@ subtitle: ''
 description: HudsonWu's personal blog
 keywords:
 author: Hudson Wu
+language: en
 # language: zh-Hans
-language: zh-CN
+# language: zh-CN
 timezone: Asia/Chongqing
 
 # URL

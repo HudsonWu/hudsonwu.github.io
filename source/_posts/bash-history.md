@@ -1,7 +1,7 @@
 ---
 title: bash历史执行命令的各种骚操作
 date: 2020-02-29 07:18:44
-catagories:
+categories:
 - Linux
 tags:
 - commands
