@@ -8,61 +8,13 @@ tags:
 thumbnail: /gallery/github-workflow.png
 ---
 
-在项目根目录创建目录`.github/workflows`，在这个目录下创建workflo文件。
-
-development.yml：
-```
-name: Development Workflow
-on: [push]
-
-jobs:
-  test:
-    name: CI Pipeline
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout master
-        uses: actions/checkout@v1
-      - name: Set up Ruby 2.6
-        uses: actions/setup-ruby@v1
-        with:
-          ruby-version: 2.6.x
-      - name: Setup bundler and required gems
-        run: |
-          gem install bundler
-          bundle install --jobs 4 --retry 3
-      - name: Build and test the websites
-        run: bundle exec rake
-  deploy:
-    name: CD Pipeline QA
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: webfactory/ssh-agent
-        uses: webfactory/ssh-agent@v0.1.1
-        with:
-          ssh-private-key: ${{ secrets.SSH_QA_PRIVATE_KEY }}
-      - name: Checkout master
-        uses: actions/checkout@v1
-      - name: Setup Ruby 2.6
-        uses: actions/setup-ruby@v1
-        with:
-          ruby-version: 2.6.x
-      - name: Set up lftp
-        run: sudo apt-get install lftp -y
-      - name: Setup bundler and required gems
-        run: |
-          gem install bundler
-          bundle install --jobs 4 --retry 3
-      - name: Build and deploy the website to QA
-        run: bundle exec rake deploy:qa
-        env:
-          SSH_DEPLOY_SERVER: ${{ secrets.SSH_QA_DEPLOY_SERVER }}
-          SSH_DEPLOY_USER: ${{ secrets.SSH_QA_DEPLOY_USER }}
-```
+在项目根目录创建目录`.github/workflows`，在这个目录下创建workflow文件。
 
 release.yml：
 ```
 name: Release Workflow
+
+# on: [push]
 on:
   push:
     tags:
@@ -74,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout master
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Set up Ruby 2.6
         uses: actions/setup-ruby@v1
         with:
@@ -86,17 +38,17 @@ jobs:
       - name: Build and test the websites
         run: bundle exec rake
   deploy:
-    name: CD Pipeline PRD
+    name: CD Pipeline PROD
     needs: test
     runs-on: ubuntu-latest
     steps:
       - name: webfactory/ssh-agent
-        uses: webfactory/ssh-agent@v0.1.1
+        uses: webfactory/ssh-agent@v0.2.0
         with:
-          ssh-private-key: ${{ secrets.SSH_PROD_PRIVATE_KEY }}
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Checkout master
-        uses: actions/checkout@v1
-      - name: Set up Ruby 2.6
+        uses: actions/checkout@v2
+      - name: Setup Ruby 2.6
         uses: actions/setup-ruby@v1
         with:
           ruby-version: 2.6.x
@@ -109,8 +61,8 @@ jobs:
       - name: Build and deploy the website to PRD
         run: bundle exec rake deploy:production
         env:
-          SSH_DEPLOY_SERVER: ${{ secrets.SSH_PROD_DEPLOY_SERVER }}
-          SSH_DEPLOY_USER: ${{ secrets.SSH_PROD_DEPLOY_USER }}
+          SSH_DEPLOY_SERVER: ${{ secrets.SSH_DEPLOY_SERVER }}
+          SSH_DEPLOY_USER: ${{ secrets.SSH_DEPLOY_USER }}
 ```
 
 ## 引用
