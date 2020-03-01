@@ -22,6 +22,18 @@ jobs:
           npm install
       - name: Generate static files
         run: hexo g
+      - name: Executing remote ssh commands - pre
+        uses: appleboy/ssh-action@master
+        env:
+          path: ${{ secrets.SSH_DEPLOY_PATH }}
+        with:
+          host: ${{ secrets.SSH_DEPLOY_SERVER }}
+          username: ${{ secrets.SSH_DEPLOY_USER }}
+          port: ${{ secrets.SSH_DEPLOY_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd $path && docker-compose down
+            rm -rf $path/public/*
       - name: Copy contents via ssh key
         uses: appleboy/scp-action@master
         env:
@@ -30,6 +42,17 @@ jobs:
           PORT: ${{ secrets.SSH_DEPLOY_PORT }}
           KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         with:
-          source: "public"
-          target: "${{ secrets.SSH_DEPLOY_PATH }}"
+          source: public
+          target: ${{ secrets.SSH_DEPLOY_PATH }}
+      - name: Executing remote ssh commands - post
+        uses: appleboy/ssh-action@master
+        env:
+          path: ${{ secrets.SSH_DEPLOY_PATH }}
+        with:
+          host: ${{ secrets.SSH_DEPLOY_SERVER }}
+          username: ${{ secrets.SSH_DEPLOY_USER }}
+          port: ${{ secrets.SSH_DEPLOY_PORT }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd $path && docker-compose up -d
 
