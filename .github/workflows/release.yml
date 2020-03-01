@@ -16,17 +16,16 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '13.x'
-      - name: npm install -g
+      - name: Install hexo-cli
         run: |
           npm install -g hexo-cli
-          npm install -g ejs@2.7.4
-      - name: npm install and hexo g
+      - name: npm install
         run: |
           npm install
           npm install -S hexo-generator-json-content
-          npm install hexo-deployer-git --save
           cd themes/hueman && npm install
-          cd ../.. && hexo g
+      - name: Generate static files
+        run: hexo g
       - name: Executing remote ssh commands - pre
         uses: appleboy/ssh-action@master
         with:
