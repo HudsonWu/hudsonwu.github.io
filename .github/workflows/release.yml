@@ -20,14 +20,13 @@ jobs:
         run: |
           npm install -g hexo-cli
           npm install -g ejs@2.7.4
-      - name: npm install
+      - name: npm install and hexo g
         run: |
           npm install
           npm install -S hexo-generator-json-content
           npm install hexo-deployer-git --save
           cd themes/hueman && npm install
-      - name: Generate static files
-        run: hexo g
+          cd ../.. && hexo g
       - name: Executing remote ssh commands - pre
         uses: appleboy/ssh-action@master
         with:
