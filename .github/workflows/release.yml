@@ -31,7 +31,5 @@ jobs:
           KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         with:
           source: "public"
-          target: "${{ secrets.SSH_DEPLOY_PATH }}/public"
-          rm: true
-
+          target: "${{ secrets.SSH_DEPLOY_PATH }}"
 
