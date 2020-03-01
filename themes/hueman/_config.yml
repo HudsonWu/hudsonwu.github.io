@@ -28,12 +28,12 @@ customize:
 widgets:
     - catalog
     - recent_posts
-    - category
+    # - category
     - archive
-    - tag
+    #- tag
     - tagcloud
-    - links
-#    - google_adsense
+    # - links
+    # - google_adsense
 
 # Search
 search:
@@ -88,7 +88,7 @@ comment:
                # Can either be a string or an array.
 
 # Share
-# share: bdshare # options: jiathis, bdshare, addtoany, default
+share: bdshare # options: jiathis, bdshare, addtoany, default
 
 # Plugins
 plugins:
@@ -116,6 +116,6 @@ miscellaneous:
         fb_admins:
         twitter_id:
     links:
-        Hexo: http://hexo.io
+        # Hexo: http://hexo.io
 
 poweredby: true
