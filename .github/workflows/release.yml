@@ -23,9 +23,12 @@ jobs:
         run: |
           npm install
           npm install -S hexo-generator-json-content
+          npm install hexo-deployer-git --save
           cd themes/hueman && npm install
       - name: Generate static files
         run: hexo g
+      - name: Deploy to hudson.wu.github.io
+        run: hexo d
       - name: Executing remote ssh commands - pre
         uses: appleboy/ssh-action@master
         with:
