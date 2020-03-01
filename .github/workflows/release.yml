@@ -21,7 +21,7 @@ jobs:
           npm install -g hexo-cli
           npm install
       - name: Generate static files
-        run: hexo -g
+        run: hexo g
       - name: Copy contents via ssh key
         uses: appleboy/scp-action@master
         env:
