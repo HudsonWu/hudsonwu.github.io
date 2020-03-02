@@ -224,3 +224,8 @@ The comedian is Eric Idle, aged 74.
 '{74}'
 >>> f"{{{{74}}}}"
 '{{74}}'
+```
+
+## 引用
+
++ [Python 3's f-Strings](https://realpython.com/python-f-strings/)
