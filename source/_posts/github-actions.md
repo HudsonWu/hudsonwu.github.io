@@ -5,6 +5,7 @@ categories:
 - CI/CD
 tags:
 - github
+- idea
 thumbnail: /gallery/explore-github.png
 ---
 使用`Github Actions`可以直接在github仓库中自动化实现软件开发整个生命周期的工作流（from idea to production）。你可以编写单独的任务（称为`actions`），然后将这些任务联合以创建自定义的工作流（`workflow`），你可以设置工作流来构建、测试、打包、发布。工作流中的任务被执行的地方（主机）称为`runners`，github提供的共享runner称为`GitHub-hosted runners`，你也可以使用自己的主机来运行任务，这种主机称为`Self-hosted runners`

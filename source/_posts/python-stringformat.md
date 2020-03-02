@@ -226,6 +226,34 @@ The comedian is Eric Idle, aged 74.
 '{{74}}'
 ```
 
+## 一些说明
+
+python中有两个内建方法（functions）可以将对象转换成字符串：`str`和`repr`，`str`是更加友好、可读的字符串输出，`repr`则是包括对象更详细的信息。
+
+```python
+>>> print(repr('hi'))
+'hi'
+>>> print(str('hi'))
+hi
+>>> print('hi')
+hi
+```
+
+```python
+class Foo:
+    def __init__(self, foo):
+        self.foo = foo
+
+    def __eq__(self, other):
+        """Implements ==."""
+        return self.foo == other.foo
+    
+    def __repr__(self):
+        # if you eval the return value of this function,
+        # you'll get another Foo instance that's == to self
+        return "Foo(%r)" % self.foo
+```
+
 ## 引用
 
 + [Python 3's f-Strings](https://realpython.com/python-f-strings/)
