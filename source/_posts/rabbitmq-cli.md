@@ -16,14 +16,16 @@ thumbnail: /gallery/rabbitmq.png
 
 ## 常用命令
 
-### 队列(queue)管理
-
 ```
 # 查看有多少队列以及每个队列中的消息数(messages)
 rabbitmqctl list_queues
 # 自定义显示队列
 rabbitmqctl list_queues name messages_ready messages_unacknowledged
 
+# 列出exchanges
+rabbitmqctl list_exchanges
+# 列出现有的exchange和队列的绑定(bindings)
+rabbitmqctl list_bindings
 ```
 
 ### 用户管理
