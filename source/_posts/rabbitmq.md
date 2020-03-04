@@ -1,5 +1,5 @@
 ---
-title: rabbitmq命令行工具
+title: rabbitmq一些概念介绍
 date: 2020-03-02 14:40:44
 categories:
 - Others
