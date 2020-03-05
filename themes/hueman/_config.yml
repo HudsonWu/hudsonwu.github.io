@@ -88,7 +88,8 @@ comment:
                # Can either be a string or an array.
 
 # Share
-share: bdshare # options: jiathis, bdshare, addtoany, default
+# share: bdshare # options: jiathis, bdshare, addtoany, default
+share: addtoany
 
 # Plugins
 plugins:
