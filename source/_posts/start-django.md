@@ -49,6 +49,19 @@ python3 manage.py runserver
 python3 manage.py runserver 0:8088  # 自定义网卡和端口
 ```
 
+## 调试
+
+```
+# 查看django版本
+python3 -m django --version
+
+# 执行python命令
+python3 -c 'import channels; print(channels.__version__)'
+
+# 打开django shell
+python3 manage.py shell
+```
+
 ## 从项目中移除app1
 
 1. 删除数据库中app1对应的表
