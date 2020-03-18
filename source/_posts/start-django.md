@@ -69,3 +69,15 @@ python3 manage.py shell
 3. `python3 manage.py makemigrations`
 4. `python3 manage.py migrate app1`
 5. 删除app1文件夹
+
+# django项目管理命令
+
+```
+# 清空数据库中所有表的数据
+python3 manage.py flush
+# 直接清空，不输出提示
+python3 manage.py flush --noinput
+
+# 从fixture中导入数据到数据库
+python3 manage.py loaddata yourapp/fixtures/xxx.json
+```
