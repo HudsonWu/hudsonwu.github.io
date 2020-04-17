@@ -8,7 +8,7 @@ tags:
 thumbnail: /gallery/django.png
 ---
 
-一个django项目可以有多个application，一个application可以有多个model，一个model会映射到后端数据库的一张表中。这篇文章会介绍如何如何创建django项目、如何删除所有数据库表以及如何完全删除application。
+一个django项目下可以存在多个application，application下可以定义很多的model，一个model会映射到后端数据库的一张表中。这篇文章简单介绍如何如何创建django项目、如何删除所有数据库表以及如何完全删除application。
 
 ## 安装和创建项目
 
@@ -70,7 +70,7 @@ python3 manage.py shell
 4. `python3 manage.py migrate app1`
 5. 删除app1文件夹
 
-# django项目管理命令
+## django项目管理命令
 
 ```
 # 清空数据库中所有表的数据
@@ -81,3 +81,7 @@ python3 manage.py flush --noinput
 # 从fixture中导入数据到数据库
 python3 manage.py loaddata yourapp/fixtures/xxx.json
 ```
+
+## /static
+
+静态文件在生产环境中建议使用nginx等web服务器另外提供访问，如果想要在Debug设置为False的情况下测试下仍想正常访问/static，可以另外提供目录并配置`STATIC_ROOT`，或者运行时加上`--insecure`参数。
