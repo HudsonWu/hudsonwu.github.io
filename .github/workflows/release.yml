@@ -20,13 +20,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '10.x'
-      - name: Npm cache
-        uses: actions/cache@v1
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
       - name: Install hexo-cli
         run: |
           npm install -g hexo-cli
@@ -36,6 +29,20 @@ jobs:
           npm install -S hexo-generator-json-content
           npm install hexo-deployer-git --save
           cd themes/hueman && npm install
+      - name: Npm cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+      - name: node_modules cache
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-modules-
       - name: Generate static files
         run: |
           git config --global user.email "wuhaishui1234@gmail.com"
