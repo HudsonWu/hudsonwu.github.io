@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>awk使用示例 | hudson&#39;s note</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="commands" />
+    
+    <meta name="description" content="123456789101112131415161718192021222324252627282930313233343536373839404142# 打印大于80个字符的行awk &#39;length($0) &gt; 80&#39; data# 打印最长输入行的长度awk &#39;&amp;#123; if (length($0) &gt; max) max &#x3D; length($0)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="awk使用示例">
+<meta property="og:url" content="https://www.gogotech.top/2020/05/01/awk-examples/index.html">
+<meta property="og:site_name" content="hudson&#39;s note">
+<meta property="og:description" content="123456789101112131415161718192021222324252627282930313233343536373839404142# 打印大于80个字符的行awk &#39;length($0) &gt; 80&#39; data# 打印最长输入行的长度awk &#39;&amp;#123; if (length($0) &gt; max) max &#x3D; length($0)">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.gogotech.top/gallery/awk-01.jpg">
+<meta property="article:published_time" content="2020-05-01T14:18:44.000Z">
+<meta property="article:modified_time" content="2020-05-09T07:18:34.023Z">
+<meta property="article:author" content="Hudson Wu">
+<meta property="article:tag" content="commands">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.gogotech.top/gallery/awk-01.jpg">
+    
+
+    
+
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">Before you can run, you need to be able to walk</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">Home</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CI-CD/">CI/CD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Code/">Code</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Others/">Others</a></li></ul>
+                                    
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/about/index.html">About</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Linux/">Linux</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-awk-examples" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        awk使用示例
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+      <i class="fa fa-calendar"></i>
+      <a href="/2020/05/01/awk-examples/" class="article-date">
+         <time datetime="2020-05-01T14:18:44.000Z" itemprop="datePublished">2020-05-01</time>
+      </a>
+    </div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/commands/" rel="tag">commands</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"># 打印大于80个字符的行</span><br><span class="line">awk &#39;length($0) &gt; 80&#39; data</span><br><span class="line"></span><br><span class="line"># 打印最长输入行的长度</span><br><span class="line">awk &#39;&#123; if (length($0) &gt; max) max &#x3D; length($0) &#125;</span><br><span class="line">     END &#123; print max &#125;&#39; data</span><br><span class="line"></span><br><span class="line"># 打印最长输入行的长度</span><br><span class="line"># expand, 将tab转换成空格</span><br><span class="line">expand data | awk &#39;&#123; if (x &lt; length($0)) x &#x3D; length($0) &#125;</span><br><span class="line">                    END &#123; print &quot;maximum line length is &quot; x &#125;&#39;</span><br><span class="line"></span><br><span class="line"># 打印至少有一个字段的行, 可以用来删除空行</span><br><span class="line">awk &#39;NF &gt; 0&#39; data</span><br><span class="line"></span><br><span class="line"># 打印0到100之间的随机7个数字</span><br><span class="line">awk &#39;BEGIN &#123; for (i&#x3D;1; i&lt;&#x3D;7; i++)</span><br><span class="line">                 print int(101 * rand()) &#125;&#39;</span><br><span class="line"></span><br><span class="line"># 计算当前目录所有文件的总大小(bytes)</span><br><span class="line">ls -l | awk &#39;&#123; x+&#x3D; $5 &#125;</span><br><span class="line">    END &#123; print &quot;total bytes: &quot; x &#125;&#39;</span><br><span class="line"></span><br><span class="line"># 计算当前目录所有文件的总大小(kilobytes)</span><br><span class="line">ls -l | awk &#39;&#123; x+&#x3D; $5 &#125;</span><br><span class="line">    END &#123; print &quot;total K-bytes: &quot;, x &#x2F; 1024 &#125;&#39;</span><br><span class="line"></span><br><span class="line"># 打印排序后的用户名列表</span><br><span class="line">awk -F: &#39;&#123; print $1 &#125;&#39; &#x2F;etc&#x2F;passwd | sort</span><br><span class="line"></span><br><span class="line"># 打印总行数</span><br><span class="line">awk &#39;END &#123; print NR &#125;&#39; data</span><br><span class="line"></span><br><span class="line"># 打印偶数行</span><br><span class="line">awk &#39;NR % 2 &#x3D;&#x3D; 0&#39; data</span><br><span class="line"></span><br><span class="line"># 根据最后修改时间统计文件</span><br><span class="line">ls -l | awk &#39;$6 &#x3D;&#x3D; &quot;Nov&quot; &#123; sum +&#x3D; $5 &#125;</span><br><span class="line">             END &#123; print sum &#125;&#39;</span><br><span class="line"></span><br><span class="line"># 统计连接数</span><br><span class="line">ss -n | awk &#39;&#x2F;^tcp&#x2F; &#123; ++S[$NF] &#125; END &#123; for (a in S) print a, S[a] &#125;&#39;</span><br></pre></td></tr></table></figure>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share" target="_blank" rel="noopener">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "Hudson Wu"
+        },
+        "headline": "awk使用示例",
+        "image": "https://www.gogotech.top/gallery/awk-01.jpg",
+        "keywords": "commands",
+        "genre": "Linux",
+        "datePublished": "2020-05-01",
+        "dateCreated": "2020-05-01",
+        "dateModified": "2020-05-09",
+        "url": "https://www.gogotech.top/2020/05/01/awk-examples/",
+        "description": "123456789101112131415161718192021222324252627282930313233343536373839404142# 打印大于80个字符的行awk &#39;length($0) &gt; 80&#39; data# 打印最长输入行的长度awk &#39;&#123; if (length($0) &gt; max) max &#x3D; length($0) ",
+        "wordCount": 302
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/HudsonWu" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2020/05/09/hping3/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            hping3, 强大的发包工具
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2020/03/10/nginx-tricks/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">nginx配置技巧</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/05/09/hping3/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/hping.jpeg)" alt="hping3, 强大的发包工具" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Linux/">Linux</a></p>
+                            <p class="item-title"><a href="/2020/05/09/hping3/" class="title">hping3, 强大的发包工具</a></p>
+                            <p class="item-date"><time datetime="2020-05-09T06:18:44.000Z" itemprop="datePublished">2020-05-09</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/05/01/awk-examples/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/awk-01.jpg)" alt="awk使用示例" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Linux/">Linux</a></p>
+                            <p class="item-title"><a href="/2020/05/01/awk-examples/" class="title">awk使用示例</a></p>
+                            <p class="item-date"><time datetime="2020-05-01T14:18:44.000Z" itemprop="datePublished">2020-05-01</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/03/10/nginx-tricks/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/nginx-location.png)" alt="nginx配置技巧" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Others/">Others</a></p>
+                            <p class="item-title"><a href="/2020/03/10/nginx-tricks/" class="title">nginx配置技巧</a></p>
+                            <p class="item-date"><time datetime="2020-03-10T06:40:44.000Z" itemprop="datePublished">2020-03-10</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/03/05/start-django/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/django.png)" alt="开始使用django" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Code/">Code</a></p>
+                            <p class="item-title"><a href="/2020/03/05/start-django/" class="title">开始使用django</a></p>
+                            <p class="item-date"><time datetime="2020-03-05T17:28:17.000Z" itemprop="datePublished">2020-03-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/03/04/scp-and-rsync/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/filetransfer.jpg)" alt="使用scp或者rsync进行文件传输" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Linux/">Linux</a></p>
+                            <p class="item-title"><a href="/2020/03/04/scp-and-rsync/" class="title">使用scp或者rsync进行文件传输</a></p>
+                            <p class="item-date"><time datetime="2020-03-04T20:42:23.000Z" itemprop="datePublished">2020-03-05</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/commands/" style="font-size: 20px;">commands</a> <a href="/tags/config/" style="font-size: 10px;">config</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/idea/" style="font-size: 15px;">idea</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/python/" style="font-size: 15px;">python</a>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2020 Hudson Wu</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+        
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

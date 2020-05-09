@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>Github Actions示例 | hudson&#39;s note</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="github" />
+    
+    <meta name="description" content="在项目根目录创建目录.github&#x2F;workflows，在这个目录下创建workflow文件。 release.yml： 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051name: Release Workflow# on: [push]on:  push:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Github Actions示例">
+<meta property="og:url" content="https://www.gogotech.top/2020/02/29/github-actions-quickstart/index.html">
+<meta property="og:site_name" content="hudson&#39;s note">
+<meta property="og:description" content="在项目根目录创建目录.github&#x2F;workflows，在这个目录下创建workflow文件。 release.yml： 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051name: Release Workflow# on: [push]on:  push:">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.gogotech.top/gallery/github-workflow.png">
+<meta property="article:published_time" content="2020-02-29T17:39:22.000Z">
+<meta property="article:modified_time" content="2020-05-09T07:18:34.023Z">
+<meta property="article:author" content="Hudson Wu">
+<meta property="article:tag" content="github">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.gogotech.top/gallery/github-workflow.png">
+    
+
+    
+
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">Before you can run, you need to be able to walk</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">Home</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CI-CD/">CI/CD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Code/">Code</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Others/">Others</a></li></ul>
+                                    
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/about/index.html">About</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/CI-CD/">CI/CD</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-github-actions-quickstart" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Github Actions示例
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+      <i class="fa fa-calendar"></i>
+      <a href="/2020/02/29/github-actions-quickstart/" class="article-date">
+         <time datetime="2020-02-29T17:39:22.000Z" itemprop="datePublished">2020-03-01</time>
+      </a>
+    </div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/github/" rel="tag">github</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <p>在项目根目录创建目录<code>.github/workflows</code>，在这个目录下创建workflow文件。</p>
+<p>release.yml：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">name: Release Workflow</span><br><span class="line"></span><br><span class="line"># on: [push]</span><br><span class="line">on:</span><br><span class="line">  push:</span><br><span class="line">    tags:</span><br><span class="line">      - &quot;v*&quot;</span><br><span class="line"></span><br><span class="line">jobs:</span><br><span class="line">  test:</span><br><span class="line">    name: CI Pipeline</span><br><span class="line">    runs-on: ubuntu-latest</span><br><span class="line">    steps:</span><br><span class="line">      - name: Checkout master</span><br><span class="line">        uses: actions&#x2F;checkout@v2</span><br><span class="line">      - name: Set up Ruby 2.6</span><br><span class="line">        uses: actions&#x2F;setup-ruby@v1</span><br><span class="line">        with:</span><br><span class="line">          ruby-version: 2.6.x</span><br><span class="line">      - name: Setup bundler and required gems</span><br><span class="line">        run: |</span><br><span class="line">          gem install bundler</span><br><span class="line">          bundle install --jobs 4 --retry 3</span><br><span class="line">      - name: Build and test the websites</span><br><span class="line">        run: bundle exec rake</span><br><span class="line">  deploy:</span><br><span class="line">    name: CD Pipeline PROD</span><br><span class="line">    needs: test</span><br><span class="line">    runs-on: ubuntu-latest</span><br><span class="line">    steps:</span><br><span class="line">      - name: webfactory&#x2F;ssh-agent</span><br><span class="line">        uses: webfactory&#x2F;ssh-agent@v0.2.0</span><br><span class="line">        with:</span><br><span class="line">          ssh-private-key: $&#123;&#123; secrets.SSH_PRIVATE_KEY &#125;&#125;</span><br><span class="line">      - name: Checkout master</span><br><span class="line">        uses: actions&#x2F;checkout@v2</span><br><span class="line">      - name: Setup Ruby 2.6</span><br><span class="line">        uses: actions&#x2F;setup-ruby@v1</span><br><span class="line">        with:</span><br><span class="line">          ruby-version: 2.6.x</span><br><span class="line">      - name: Set up lftp</span><br><span class="line">        run: sudo apt-get install lftp -y</span><br><span class="line">      - name: Setup bundler and required gems</span><br><span class="line">        run: |</span><br><span class="line">          gem install bundler</span><br><span class="line">          bundle install --jobs 4 --retry 3</span><br><span class="line">      - name: Build and deploy the website to PRD</span><br><span class="line">        run: bundle exec rake deploy:production</span><br><span class="line">        env:</span><br><span class="line">          SSH_DEPLOY_SERVER: $&#123;&#123; secrets.SSH_DEPLOY_SERVER &#125;&#125;</span><br><span class="line">          SSH_DEPLOY_USER: $&#123;&#123; secrets.SSH_DEPLOY_USER &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><ul>
+<li><a href="https://www.thbe.org/posts/2019/12/03/Github_actions_-_CI.html" target="_blank" rel="noopener">thbe.org</a></li>
+</ul>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share" target="_blank" rel="noopener">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "Hudson Wu"
+        },
+        "headline": "Github Actions示例",
+        "image": "https://www.gogotech.top/gallery/github-workflow.png",
+        "keywords": "github",
+        "genre": "CI/CD",
+        "datePublished": "2020-03-01",
+        "dateCreated": "2020-03-01",
+        "dateModified": "2020-05-09",
+        "url": "https://www.gogotech.top/2020/02/29/github-actions-quickstart/",
+        "description": "在项目根目录创建目录.github/workflows，在这个目录下创建workflow文件。
+release.yml：
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051name: Release Workflow# on: [push]on:  push:  ",
+        "wordCount": 524
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/HudsonWu" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2020/03/01/python-stringformat/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            python3中的字符串格式化
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+        <a href="/2020/02/29/github-actions/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">older</strong>
+        <p class="article-nav-title">理解Github Actions</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/05/09/hping3/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/hping.jpeg)" alt="hping3, 强大的发包工具" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Linux/">Linux</a></p>
+                            <p class="item-title"><a href="/2020/05/09/hping3/" class="title">hping3, 强大的发包工具</a></p>
+                            <p class="item-date"><time datetime="2020-05-09T06:18:44.000Z" itemprop="datePublished">2020-05-09</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/05/01/awk-examples/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/awk-01.jpg)" alt="awk使用示例" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Linux/">Linux</a></p>
+                            <p class="item-title"><a href="/2020/05/01/awk-examples/" class="title">awk使用示例</a></p>
+                            <p class="item-date"><time datetime="2020-05-01T14:18:44.000Z" itemprop="datePublished">2020-05-01</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/03/10/nginx-tricks/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/nginx-location.png)" alt="nginx配置技巧" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Others/">Others</a></p>
+                            <p class="item-title"><a href="/2020/03/10/nginx-tricks/" class="title">nginx配置技巧</a></p>
+                            <p class="item-date"><time datetime="2020-03-10T06:40:44.000Z" itemprop="datePublished">2020-03-10</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/03/05/start-django/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/django.png)" alt="开始使用django" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Code/">Code</a></p>
+                            <p class="item-title"><a href="/2020/03/05/start-django/" class="title">开始使用django</a></p>
+                            <p class="item-date"><time datetime="2020-03-05T17:28:17.000Z" itemprop="datePublished">2020-03-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/03/04/scp-and-rsync/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/filetransfer.jpg)" alt="使用scp或者rsync进行文件传输" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Linux/">Linux</a></p>
+                            <p class="item-title"><a href="/2020/03/04/scp-and-rsync/" class="title">使用scp或者rsync进行文件传输</a></p>
+                            <p class="item-date"><time datetime="2020-03-04T20:42:23.000Z" itemprop="datePublished">2020-03-05</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/commands/" style="font-size: 20px;">commands</a> <a href="/tags/config/" style="font-size: 10px;">config</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/idea/" style="font-size: 15px;">idea</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/python/" style="font-size: 15px;">python</a>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2020 Hudson Wu</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+        
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

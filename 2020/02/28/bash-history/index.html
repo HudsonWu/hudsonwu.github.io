@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    
+
+    
+    <title>bash历史执行命令的各种骚操作 | hudson&#39;s note</title>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="keywords" content="commands" />
+    
+    <meta name="description" content="在bash命令行中，会记录历史执行的命令，使用history命令可以查看，在bash环境中，对历史命令的操作非常强大，熟悉这些用法后可以非常高效地在bash命令行中工作。 对历史命令的操作分为三个层次，第一个是获取到历史命令，用到的命令（字符）称为Event designators；第二个是获取到命令中的特定字符，用到的命令称为Word designators；第三个是对字符进行操作，用到的命令称">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bash历史执行命令的各种骚操作">
+<meta property="og:url" content="https://www.gogotech.top/2020/02/28/bash-history/index.html">
+<meta property="og:site_name" content="hudson&#39;s note">
+<meta property="og:description" content="在bash命令行中，会记录历史执行的命令，使用history命令可以查看，在bash环境中，对历史命令的操作非常强大，熟悉这些用法后可以非常高效地在bash命令行中工作。 对历史命令的操作分为三个层次，第一个是获取到历史命令，用到的命令（字符）称为Event designators；第二个是获取到命令中的特定字符，用到的命令称为Word designators；第三个是对字符进行操作，用到的命令称">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.gogotech.top/gallery/penguins-01.png">
+<meta property="article:published_time" content="2020-02-28T23:18:44.000Z">
+<meta property="article:modified_time" content="2020-05-09T07:18:34.023Z">
+<meta property="article:author" content="Hudson Wu">
+<meta property="article:tag" content="commands">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.gogotech.top/gallery/penguins-01.png">
+    
+
+    
+
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    
+<script src="/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                        <h2 class="subtitle-wrap">
+                            <p class="subtitle">Before you can run, you need to be able to walk</p>
+                        </h2>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">Home</a>
+                                </li>
+                            
+                                        <ul class="main-nav-list"><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/CI-CD/">CI/CD</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Code/">Code</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Linux/">Linux</a></li><li class="main-nav-list-item"><a class="main-nav-list-link" href="/categories/Others/">Others</a></li></ul>
+                                    
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/about/index.html">About</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/Linux/">Linux</a>
+    </h1>
+</div>
+
+                        <div class="main-body-content">
+                            <article id="post-bash-history" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        bash历史执行命令的各种骚操作
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-meta">
+                
+    <div class="article-date">
+      <i class="fa fa-calendar"></i>
+      <a href="/2020/02/28/bash-history/" class="article-date">
+         <time datetime="2020-02-28T23:18:44.000Z" itemprop="datePublished">2020-02-29</time>
+      </a>
+    </div>
+
+
+                
+
+                
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/commands/" rel="tag">commands</a>
+    </div>
+
+                
+
+                
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            <p>在bash命令行中，会记录历史执行的命令，使用history命令可以查看，在bash环境中，对历史命令的操作非常强大，熟悉这些用法后可以非常高效地在bash命令行中工作。</p>
+<p>对历史命令的操作分为三个层次，第一个是获取到历史命令，用到的命令（字符）称为<code>Event designators</code>；第二个是获取到命令中的特定字符，用到的命令称为<code>Word designators</code>；第三个是对字符进行操作，用到的命令称为<code>Modifiers</code>。</p>
+<p>首先使用history命令查看历史执行命令：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">history</span></span><br><span class="line">1 tar czvf etc.tar.gz /etc/</span><br><span class="line">2 cp /etc/passwd /backup</span><br><span class="line">3 ps -ef | grep docker</span><br><span class="line">4 systemctl restart sshd</span><br><span class="line">5 /usr/<span class="built_in">local</span>/apache2/bin/apachectl restart</span><br><span class="line">6 ls -F</span><br><span class="line">7 whoami</span><br></pre></td></tr></table></figure>
+
+<h2 id="Event-designators"><a href="#Event-designators" class="headerlink" title="Event designators"></a>Event designators</h2><p>使用<code>!n</code>命令通过命令编号获取历史执行过的命令：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ !!</span><br><span class="line">whoami</span><br><span class="line">user01</span><br><span class="line">$ !-1</span><br><span class="line">whoami</span><br><span class="line">user01</span><br><span class="line">$ !4</span><br><span class="line">systemctl restart sshd</span><br><span class="line">$ !-2</span><br><span class="line">ls -F</span><br><span class="line">1.txt  2.txt  helloworld.txt  start.sh*  test01/  test02/</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>!string</code>（以指定字符串开头的命令）和<code>!?string</code>（包含指定字符串的命令）获取历史执行过的命令：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ !ps</span><br><span class="line">ps -ef | grep docker</span><br><span class="line">$ !?apache</span><br><span class="line">/usr/<span class="built_in">local</span>/apache2/bin/apachectl restart</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>^str1^str2^</code>从前一条命令中取代字符：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ls /etc/cron.daily/logrotate</span><br><span class="line">$ ^ls^cat^</span><br><span class="line">cat /etc/cron.daily/logrotate</span><br></pre></td></tr></table></figure>
+
+<h2 id="Word-Designators"><a href="#Word-Designators" class="headerlink" title="Word Designators"></a>Word Designators</h2><p>Word Designators在你想要输入一个新的命令但使用之前执行的命令用过的参数时非常有用。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ cp /etc/passwd /backup</span><br><span class="line">$ ls -l !cp:^  <span class="comment"># 使用^获取第一个参数</span></span><br><span class="line">ls -l /etc/passwd</span><br><span class="line"></span><br><span class="line">$ cp /etc/passwd /backup</span><br><span class="line">$ ls -l !cp:$  <span class="comment"># 使用$获取最后一个参数</span></span><br><span class="line">ls -l /backup</span><br><span class="line"></span><br><span class="line">$ tar czvf /backup/home-dir-backup.tar.gz /home</span><br><span class="line">$ ls -l !tar:2  <span class="comment"># 获取指定位置的参数</span></span><br><span class="line">ls -l /backup/home-dir-backup.tar.gz</span><br><span class="line"></span><br><span class="line">$ cp /etc/passwd /backup</span><br><span class="line">$ ls -l !cp:*  <span class="comment"># 使用*获取所有参数</span></span><br><span class="line">ls -l /etc/passwd /backup</span><br><span class="line"></span><br><span class="line">$ tar cvf home-dir.tar john jason ramesh rita</span><br><span class="line">$ ls -l !tar:3-5  <span class="comment"># 获取指定范围内的参数</span></span><br><span class="line">ls -l john jason ramesh</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>!!:*</code>, 从前一个命令中获取所有参数</li>
+<li><code>!!:2*</code>, 从前一个命令中获取从第二个参数开始后的所有参数</li>
+<li><code>!!:2-$</code>, 和上一个命令相同</li>
+<li><code>!!:2-</code>, 从第二个参数开始后到倒数第二个参数，即不包括最后一个参数</li>
+</ul>
+<p>使用<code>!%</code>获取最近搜索到的命令中匹配到的字符：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ /usr/<span class="built_in">local</span>/apache2/bin/apachectl restart</span><br><span class="line">$ !?apache</span><br><span class="line">/usr/<span class="built_in">local</span>/apache2/bin/apachectl restart</span><br><span class="line">$ !% stop  <span class="comment"># !%获取前一个!?命令字符串匹配到的整个词</span></span><br><span class="line">/usr/<span class="built_in">local</span>/apache2/bin/apachectl stop</span><br></pre></td></tr></table></figure>
+
+<h2 id="Modifers"><a href="#Modifers" class="headerlink" title="Modifers"></a>Modifers</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ ls -l /very/long/path/name/file-name.txt</span><br><span class="line">$ ls -l !!:$:h  <span class="comment"># :h的功能是删除路径中最后的位置</span></span><br><span class="line">ls -l /very/long/path/name</span><br><span class="line"></span><br><span class="line">$ ls -l /very/long/path/name/file-name.txt</span><br><span class="line">$ ls -l !!:$:t  <span class="comment"># :t的功能是保留路径最后的位置</span></span><br><span class="line">ls -l file-name.txt</span><br><span class="line"></span><br><span class="line">$ ls -l /very/long/path/name/file-name.txt</span><br><span class="line">$ ls -l !!:$:r  <span class="comment"># :r的功能是移除文件的后缀</span></span><br><span class="line">ls -l /very/long/path/name/file-name</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>:s</code>像sed一样对字符进行替换：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ ls 1.txt 2.txt 1.txt</span><br><span class="line">$ !!:s/1.txt/3.txt/  <span class="comment"># 替换第一个匹配的字符串</span></span><br><span class="line">ls 3.txt 2.txt 1.txt</span><br><span class="line"></span><br><span class="line">$ cp /etc/password /backup/password.bak</span><br><span class="line">$ !!:gs/password/passwd/  <span class="comment"># 全局替换</span></span><br><span class="line">cp /etc/passwd /backup/passwd.bak</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>&amp;</code>快速重复上一个替换：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ tar cvf password.tar /etc/password</span><br><span class="line">$ !!:g&amp;</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>:p</code>不执行，只打印命令：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ tar cvf home-dir.tar john jason ramesh rita</span><br><span class="line">$ tar cvfz new-file.tar !tar:3-:p</span><br><span class="line">tar cvfz new-file.tar john jason ramesh</span><br></pre></td></tr></table></figure>
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share" target="_blank" rel="noopener">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "author": {
+            "@type": "Person",
+            "name": "Hudson Wu"
+        },
+        "headline": "bash历史执行命令的各种骚操作",
+        "image": "https://www.gogotech.top/gallery/penguins-01.png",
+        "keywords": "commands",
+        "genre": "Linux",
+        "datePublished": "2020-02-29",
+        "dateCreated": "2020-02-29",
+        "dateModified": "2020-05-09",
+        "url": "https://www.gogotech.top/2020/02/28/bash-history/",
+        "description": "在bash命令行中，会记录历史执行的命令，使用history命令可以查看，在bash环境中，对历史命令的操作非常强大，熟悉这些用法后可以非常高效地在bash命令行中工作。
+对历史命令的操作分为三个层次，第一个是获取到历史命令，用到的命令（字符）称为Event designators；第二个是获取到命令中的特定字符，用到的命令称为Word designators；第三个是对字符进行操作，用到的命令称",
+        "wordCount": 423
+    }
+</script>
+
+</article>
+
+    <section id="comments">
+    
+    </section>
+
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>follow:</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/HudsonWu" target="_blank" rel="noopener">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2020/02/29/github-actions/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">newer</strong>
+        <p class="article-nav-title">
+        
+            理解Github Actions
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">recents</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/05/09/hping3/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/hping.jpeg)" alt="hping3, 强大的发包工具" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Linux/">Linux</a></p>
+                            <p class="item-title"><a href="/2020/05/09/hping3/" class="title">hping3, 强大的发包工具</a></p>
+                            <p class="item-date"><time datetime="2020-05-09T06:18:44.000Z" itemprop="datePublished">2020-05-09</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/05/01/awk-examples/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/awk-01.jpg)" alt="awk使用示例" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Linux/">Linux</a></p>
+                            <p class="item-title"><a href="/2020/05/01/awk-examples/" class="title">awk使用示例</a></p>
+                            <p class="item-date"><time datetime="2020-05-01T14:18:44.000Z" itemprop="datePublished">2020-05-01</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/03/10/nginx-tricks/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/nginx-location.png)" alt="nginx配置技巧" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Others/">Others</a></p>
+                            <p class="item-title"><a href="/2020/03/10/nginx-tricks/" class="title">nginx配置技巧</a></p>
+                            <p class="item-date"><time datetime="2020-03-10T06:40:44.000Z" itemprop="datePublished">2020-03-10</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/03/05/start-django/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/django.png)" alt="开始使用django" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Code/">Code</a></p>
+                            <p class="item-title"><a href="/2020/03/05/start-django/" class="title">开始使用django</a></p>
+                            <p class="item-date"><time datetime="2020-03-05T17:28:17.000Z" itemprop="datePublished">2020-03-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2020/03/04/scp-and-rsync/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/gallery/filetransfer.jpg)" alt="使用scp或者rsync进行文件传输" class="thumbnail-image"></span>
+    
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/Linux/">Linux</a></p>
+                            <p class="item-title"><a href="/2020/03/04/scp-and-rsync/" class="title">使用scp或者rsync进行文件传输</a></p>
+                            <p class="item-date"><time datetime="2020-03-04T20:42:23.000Z" itemprop="datePublished">2020-03-05</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">March 2020</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/02/">February 2020</a><span class="archive-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/commands/" style="font-size: 20px;">commands</a> <a href="/tags/config/" style="font-size: 10px;">config</a> <a href="/tags/github/" style="font-size: 15px;">github</a> <a href="/tags/idea/" style="font-size: 15px;">idea</a> <a href="/tags/nginx/" style="font-size: 10px;">nginx</a> <a href="/tags/python/" style="font-size: 15px;">python</a>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2020 Hudson Wu</p>
+                
+                <p>Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="https://github.com/ppoffice" target="_blank">PPOffice</a></p>
+                
+            </div>
+            <div class="footer-plugins">
+              
+    
+
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+        
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>
