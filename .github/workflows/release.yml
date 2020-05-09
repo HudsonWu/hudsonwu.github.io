@@ -48,7 +48,7 @@ jobs:
           git config --global user.email "wuhaishui1234@gmail.com"
           git config --global user.name 'hudson'
           git config --global push.defalut simple
-          git status
+          git status | grep modified; if [ $? -eq 0 ]; then git commit -a -m "package.json" && git push; fi
           hexo g
       - name: Deploy to hudson.wu.github.io
         run: hexo d

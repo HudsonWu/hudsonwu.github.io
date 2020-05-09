@@ -1,7 +1,6 @@
 ---
 title: 使用scp或者rsync进行文件传输
 date: 2020-03-05 04:42:23
-tags:
 categories:
 - Linux
 tags:
